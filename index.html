@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ace Two Sum: Dark Mode Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>The Two Sum Guide</h1>
+    <p>Ace LeetCode Q1 // Google Interview Framework</p>
+</header>
+
+<div class="container">
+    
+    <h2>1. The Novice Dictionary</h2>
+    <p>Before we start the interview simulation, let's define the tools we will use.</p>
+    
+    <div class="grid-container">
+        <div class="card">
+            <strong>C++</strong>
+            <p>A high-performance programming language used heavily at Google.</p>
+        </div>
+        <div class="card">
+            <strong>STL (Standard Template Library)</strong>
+            <p>A collection of pre-written tools. Instead of writing a dynamic list from scratch, we use the tool <code>std::vector</code>.</p>
+        </div>
+        <div class="card">
+            <strong>Big O Notation</strong>
+            <p><strong>TC (Time):</strong> How execution time grows. O(n) is linear (good). O(n²) is slow.<br>
+            <strong>SC (Space):</strong> How much extra memory we need.</p>
+        </div>
+        <div class="card">
+            <strong>DSA</strong>
+            <p><strong>Data Structure:</strong> How we organize data (e.g., a list).<br>
+            <strong>Algorithm:</strong> The steps to solve the problem.</p>
+        </div>
+    </div>
+
+    <h2>2. Visual Logic: The "Notebook" Strategy</h2>
+    <p><strong>Problem:</strong> Given <code>nums = [2, 7, 11, 15]</code>, <code>target = 9</code>. Find indices of two numbers that add up to 9.</p>
+    
+    <div class="image-placeholder">
+        
+    </div>
+
+    <h3>The Walkthrough</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>Current Number (Index)</th>
+                <th>Thinking Process</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>2 (Index 0)</td>
+                <td>"I need a 7 to make 9. Have I seen a 7?"</td>
+                <td>No. Write in Notebook: <code>{2: 0}</code></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>7 (Index 1)</td>
+                <td>"I need a 2 to make 9. Have I seen a 2?"</td>
+                <td><strong>YES!</strong> Check notebook. It is at Index 0.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Solution:</strong> Return indices <code>[0, 1]</code>.</p>
+
+    <h2>3. The Google Interview Framework</h2>
+    
+    <h3>Phase 0: The Setup</h3>
+    <div class="dialogue">
+        <span class="label">Candidate Script</span>
+        "Hi, I'm really excited to be here. Before we dive in, do you have one or two problems planned? It helps me pace my solution."
+    </div>
+
+    <h3>Phase 1: Clarify the Problem</h3>
+    <div class="dialogue coach">
+        <span class="label">Goal</span>
+        Don't assume anything. Define constraints.
+    </div>
+    <div class="dialogue">
+        <span class="label">Candidate Script</span>
+        "To ensure I have the full picture:<br>
+        1. Can integers be negative? (e.g., -3 + 12 = 9)<br>
+        2. Are the numbers sorted?<br>
+        3. Is there exactly one solution?<br>
+        <strong>Assumption:</strong> I'll assume the array is unsorted and there is exactly one valid solution."
+    </div>
+
+    <h3>Phase 2: Define Approaches</h3>
+    <p><strong>Approach 1: Brute Force (Novice)</strong></p>
+    <p>Pick the first number, check it against every other number. (Nested Loops).</p>
+    <p>TC: <span class="math">O(n²)</span> | SC: <span class="math">O(1)</span></p>
+    
+    <div class="image-placeholder">
+        
+    </div>
+
+    <hr>
+
+    <p><strong>Approach 2: Hash Map (Optimal)</strong></p>
+    <p>Use the "Notebook" strategy. Look up data instantly using <code>std::unordered_map</code>.</p>
+    <p>TC: <span class="math">O(n)</span> | SC: <span class="math">O(n)</span></p>
+
+    <div class="dialogue">
+        <span class="label">Candidate Script</span>
+        "The bottleneck is repeated searching. I will use a Hash Map to trade space for time. I'll iterate once, calculate the complement, and check the map. Does this architectural decision sound good?"
+    </div>
+
+    <h2>4. Code with Quality (Google C++ Style)</h2>
+    <pre><code><span class="keyword">#include</span> &lt;vector&gt;
+<span class="keyword">#include</span> &lt;unordered_map&gt;
+
+<span class="keyword">class</span> <span class="type">Solution</span> {
+<span class="keyword">public</span>:
+    <span class="comment">// Passing by "Reference" (&nums) avoids copying the huge array.</span>
+    <span class="type">std::vector&lt;int&gt;</span> <span class="function">twoSum</span>(<span class="keyword">const</span> <span class="type">std::vector&lt;int&gt;</span>& nums, <span class="type">int</span> target) {
+        
+        <span class="comment">// 1. The Notebook (Hash Map): Key = Number, Value = Index</span>
+        <span class="type">std::unordered_map&lt;int, int&gt;</span> seen_numbers;
+
+        <span class="comment">// 2. Iterate through the array</span>
+        <span class="keyword">for</span> (<span class="type">size_t</span> i = 0; i < nums.size(); ++i) {
+            
+            <span class="type">int</span> current_num = nums[i];
+            <span class="type">int</span> complement = target - current_num;
+
+            <span class="comment">// 3. Check if complement exists in the map</span>
+            <span class="keyword">if</span> (seen_numbers.find(complement) != seen_numbers.end()) {
+                <span class="comment">// Found it! Return saved index and current index.</span>
+                <span class="keyword">return</span> {seen_numbers[complement], <span class="keyword">static_cast</span>&lt;int&gt;(i)};
+            }
+
+            <span class="comment">// 4. Store current number and index</span>
+            seen_numbers[current_num] = <span class="keyword">static_cast</span>&lt;int&gt;(i);
+        }
+
+        <span class="keyword">return</span> {}; <span class="comment">// Return empty if no solution</span>
+    }
+};</code></pre>
+
+    <h3>Syntax Explained</h3>
+    <ul>
+        <li><code>std::</code>: Tells C++ to look in the Standard Library.</li>
+        <li><code>&nums</code>: Pass by Reference. Instead of photocopying the book (slow), we look at the original (fast).</li>
+        <li><code>.find() != .end()</code>: If the iterator reaches the "end", the item wasn't found. If it's NOT the end, we found it.</li>
+    </ul>
+
+    <h2>5. Modifications & FAQ</h2>
+    <p><strong>Modification: "What if the input array is already sorted?"</strong></p>
+    <p>We use the <strong>Two Pointer</strong> technique. Put one finger at the start, one at the end.</p>
+    
+    <div class="image-placeholder">
+        
+    </div>
+
+    <ul>
+        <li>If Sum > Target: Move Right finger down.</li>
+        <li>If Sum < Target: Move Left finger up.</li>
+    </ul>
+
+</div>
+
+<div class="footer">
+    <p>Designed for the ambitious novice. Good luck!</p>
+</div>
+
+</body>
+</html>
